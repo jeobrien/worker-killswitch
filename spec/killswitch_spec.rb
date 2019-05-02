@@ -1,9 +1,10 @@
-RSpec.describe Killswitch do
-  let(:cache) { double }
-  subject(:worker_killswitch) { described_class.new(cache: cache) }
+RSpec.describe Killswitch::Switch do
+  let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) } 
+  subject(:worker_killswitch) { described_class.new(cache: Rails.cache) }
 
   before :each do
-    allow(cache).to receive(:write).and_return(true)
+    allow(Rails).to receive(:cache).and_return(memory_store)
+    Rails.cache.clear
   end
 
   context "disabling queues" do
@@ -19,24 +20,6 @@ RSpec.describe Killswitch do
     it 'returns false if the key in the cache is set to false' do
       worker_killswitch.disable
       expect(worker_killswitch.enabled?).to eql(false)
-    end
-  end
-
-  context "disabling queues for specific profiles" do
-    it 'returns false if not enabled for profile' do
-      worker_killswitch.enable_for_muster_profile("other")
-      expect(worker_killswitch.enabled_for_muster_profile?("profile")).to eql(false)
-    end
-
-    it 'returns true if enabled for profile' do
-      worker_killswitch.enable_for_muster_profile("profile")
-      expect(worker_killswitch.enabled_for_muster_profile?("profile")).to eql(true)
-    end
-
-    it 'returns false when disabled for profile' do
-      worker_killswitch.enable_for_muster_profile("profile")
-      worker_killswitch.disable_for_muster_profile("profile")
-      expect(worker_killswitch.enabled_for_muster_profile?("profile")).to eql(false)
     end
   end
 
