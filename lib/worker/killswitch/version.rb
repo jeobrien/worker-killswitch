@@ -1,5 +1,5 @@
 module Worker
-  class Killswitch
+  module Killswitch
     VERSION = "0.1.0"
   end
 end

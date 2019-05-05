@@ -1,10 +1,11 @@
 RSpec.describe Worker::Killswitch do
   let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) } 
-  subject(:killswitch_toggle) { described_class.new(cache: Rails.cache) }
+  subject(:killswitch_toggle) { described_class }
 
   before :each do
     allow(Rails).to receive(:cache).and_return(memory_store)
     Rails.cache.clear
+    Worker::Killswitch.config.logger = memory_store
   end
 
   context "disabling queues" do

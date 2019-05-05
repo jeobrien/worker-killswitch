@@ -3,7 +3,7 @@
     <img height="150" alt="Worker Killswitch" src="https://github.com/jeobrien/worker-killswitch/raw/master/big-red-button.png" />
 </a>
 
-A simple way to instantly kill background processes that are not critical to the core functionality of your app. The number one priority is keeping the app up and running, whether it is already overloaded and potentially heading towards an outage or in the midst of one and needing to recover. The worker killswitch offers a way to instantly disable background workers in times of high load to prevent a user-visible outage of frontend components.
+A simple way to instantly stop background processes that are not critical to the core functionality of your app when systems are overloaded and your app is at risk of a user-visible outage. By pausing asynchronous jobs, you can temporarily relieve operational pressure without any impact to front end components of the app.
 
 ## Installation
 
@@ -21,9 +21,48 @@ Or install it yourself as:
 
     $ gem install worker-killswitch
 
-## Usage
+## Configuration
 
-This middleware checks each job as it is popped off the queue to see if the switch has been turned on. If so, it waits 5 seconds and then checks again, polling the cache each time. When it is turned off, the jobs keep getting processed. So that we aren’t having all workers polling at exactly the same time, we have added a random additional 0..1 second wait to each sleep. If there are any cache connectivity issues, the switch fails open.
+```ruby
+# In your ./config/initializer/worker_killswitch.rb
+
+Sidekiq::Killswitch.configure do |config|
+  config.logger = MyLogger.new # optional, defaults to Rails.logger
+  config.metrics_provider = MyMetricsProvider.new # optional
+end
+```
+
+Add Worker Killswitch middleware to Sidekiq:
+```ruby
+# In your config/initializers/sidekiq.rb
+require 'worker/killswitch/middleware/load'
+```
+or you can load it manually:
+```ruby
+# In your config/initializers/sidekiq.rb
+
+Sidekiq.configure_server do |config|
+  config.server_middleware do |chain|
+    chain.add Worker::Killswitch::Middleware::Server
+  end
+end
+```
+
+## Configuration
+To enable the switch:
+```ruby
+Workers::Killswitch.enable
+```
+
+To disable the switch:
+```ruby
+Workers::Killswitch.disable
+```
+
+To check the current state of the switch:
+```ruby
+Workers::Killswitch.enabled?
+```
 
 ## Development
 
