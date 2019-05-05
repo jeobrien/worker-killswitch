@@ -1,8 +1,9 @@
-# Worker Killswitch
+# Worker::Killswitch
+<a title="Worker Killswitch">
+    <img height="150" alt="Worker Killswitch" src="https://github.com/jeobrien/worker-killswitch/raw/master/big-red-button.png" />
+</a>
 
 A simple way to instantly kill background processes that are not critical to the core functionality of your app. The number one priority is keeping the app up and running, whether it is already overloaded and potentially heading towards an outage or in the midst of one and needing to recover. The worker killswitch offers a way to instantly disable background workers in times of high load to prevent a user-visible outage of frontend components.
-
-It implement the ability to pause a queue by adding a middleware to each worker config. This middleware checks each job as it is popped off the queue to see if the switch has been turned on. If so, it waits 5 seconds and then checks again, polling the cache each time. When it is turned off, the jobs keep getting processed. So that we aren’t having all workers polling at exactly the same time, we have added a random additional 0..1 second wait to each sleep. If there are any cache connectivity issues, the switch fails open.
 
 ## Installation
 
@@ -22,7 +23,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+This middleware checks each job as it is popped off the queue to see if the switch has been turned on. If so, it waits 5 seconds and then checks again, polling the cache each time. When it is turned off, the jobs keep getting processed. So that we aren’t having all workers polling at exactly the same time, we have added a random additional 0..1 second wait to each sleep. If there are any cache connectivity issues, the switch fails open.
 
 ## Development
 
