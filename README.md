@@ -26,13 +26,13 @@ Or install it yourself as:
 ```ruby
 # In your ./config/initializer/worker_killswitch.rb
 
-Sidekiq::Killswitch.configure do |config|
+Worker::Killswitch.configure do |config|
   config.logger = MyLogger.new # optional, defaults to Rails.logger
   config.metrics_provider = MyMetricsProvider.new # optional
 end
 ```
 
-Add Worker Killswitch middleware to Sidekiq:
+Add Worker Killswitch middleware to Sidekiq, SQS, etc:
 ```ruby
 # In your config/initializers/sidekiq.rb
 require 'worker/killswitch/middleware/load'
@@ -51,17 +51,17 @@ end
 ## Configuration
 To enable the switch:
 ```ruby
-Workers::Killswitch.enable
+Worker::Killswitch.enable
 ```
 
 To disable the switch:
 ```ruby
-Workers::Killswitch.disable
+Worker::Killswitch.disable
 ```
 
 To check the current state of the switch:
 ```ruby
-Workers::Killswitch.enabled?
+Worker::Killswitch.enabled?
 ```
 
 ## Development

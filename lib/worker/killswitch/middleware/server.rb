@@ -4,9 +4,9 @@ module Worker
       class Server
 
         def call(worker, job, queue)
-          while ::Workers::Killswitch.enabled?
-            ::Rails.logger.info("Sidekiq worker #{worker.class.name} paused queue #{queue} before processing job #{job['jid']}")
-            Metrics.increment("workers_disabled", tags: { type: "sidekiq", name: identifier.to_s })
+          while ::Worker::Killswitch.enabled?
+            Worker::Killswitch.logger.info("Worker #{worker.class.name} paused queue #{queue} before processing job #{job['jid']}")
+            Worker::Killswitch.metrics_provider&.increment("workers_disabled")
             ::Worker::Killswitch.wait_for_resume
           end
           yield

@@ -1,10 +1,6 @@
 require "bundler/setup"
 require "worker/killswitch"
-
-# Sidekiq::Killswitch.configure do |config|
-#   config.logger = Rails.logger
-#   config.cache = Rails.cache
-# end
+require "worker/killswitch/middleware/server"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
