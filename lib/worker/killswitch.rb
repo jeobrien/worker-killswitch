@@ -1,9 +1,9 @@
-require "killswitch/version"
+require "worker/killswitch/version"
 require "active_support/time"
 require "rails"
 
-module Killswitch
-  class Switch
+module Worker
+  class Killswitch
     class Error < StandardError; end
 
     KILLSWITCH_ENABLED_KEY = "worker_killswitch_enabled".freeze
@@ -15,14 +15,14 @@ module Killswitch
     end
 
     def enable
-      @metrics_provider&.count("Killswitch::Switch.enabled", 1)
+      @metrics_provider&.count("Killswitch::Toggle.enabled", 1)
       @metrics_provider&.event("workers_killswitch_enabled", "Worker Killswitch Enabled")
 
       @cache.write(KILLSWITCH_ENABLED_KEY, true)
     end
 
     def disable
-      @metrics_provider&.count("Killswitch::Switch.disabled", 1)
+      @metrics_provider&.count("Killswitch::Toggle.disabled", 1)
       @metrics_provider&.event("workers_killswitch_disabled", "Worker Killswitch Disabled")
 
       @cache.write(KILLSWITCH_ENABLED_KEY, false)
@@ -32,7 +32,7 @@ module Killswitch
       status = @cache.fetch(KILLSWITCH_ENABLED_KEY)
       status ? status : false
     rescue StandardError => e
-      @metrics_provider&.increment("Killswitch::Switch.cache_failure", tags: { exception: e.class.to_s })
+      @metrics_provider&.increment("Killswitch::Toggle.cache_failure", tags: { exception: e.class.to_s })
       false
     end
 

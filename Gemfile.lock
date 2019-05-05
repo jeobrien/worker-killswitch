@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    killswitch (0.1.0)
+    worker-killswitch (0.1.0)
       activesupport (>= 4.0.3)
       rails (>= 5.0)
 
@@ -135,9 +135,9 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
-  killswitch!
   rake
   rspec
+  worker-killswitch!
 
 BUNDLED WITH
    2.0.1
