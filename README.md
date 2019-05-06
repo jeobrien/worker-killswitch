@@ -28,6 +28,7 @@ Or install it yourself as:
 
 Worker::Killswitch.configure do |config|
   config.logger = MyLogger.new # optional, defaults to Rails.logger
+  config.cache = MyCache.new # optional, defaults to Rails.cache
   config.metrics_provider = MyMetricsProvider.new # optional
 end
 ```
@@ -35,11 +36,7 @@ end
 Add Worker Killswitch middleware to Sidekiq, SQS, etc:
 ```ruby
 # In your config/initializers/sidekiq.rb
-require 'worker/killswitch/middleware/load'
-```
-or you can load it manually:
-```ruby
-# In your config/initializers/sidekiq.rb
+require "worker/killswitch/middleware/server"
 
 Sidekiq.configure_server do |config|
   config.server_middleware do |chain|
@@ -72,7 +69,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/worker-killswitch. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/jeobrien/worker-killswitch. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
