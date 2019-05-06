@@ -1,5 +1,5 @@
 RSpec.describe Worker::Killswitch do
-  let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) } 
+  let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
   subject(:killswitch_toggle) { described_class }
 
   before :each do

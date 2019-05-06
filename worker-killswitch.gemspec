@@ -1,11 +1,9 @@
 
-lib = File.expand_path("../lib", __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "worker/killswitch/version"
+require File.expand_path('../lib/worker/killswitch/version', __FILE__)
 
 Gem::Specification.new do |spec|
   spec.name          = "worker-killswitch"
-  spec.version       = ::Worker::Killswitch::VERSION
+  spec.version       = Worker::Killswitch::VERSION
   spec.authors       = ["Jessica O'Brien"]
   spec.email         = ["j.e.obrien28@gmail.com"]
 
