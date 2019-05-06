@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    worker-killswitch (0.1.0)
+    worker-killswitch (0.1.1)
       activesupport (>= 4.0.3)
       rails (>= 5.0)
 
